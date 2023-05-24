@@ -66,12 +66,40 @@ def all_names_by_hobby(filename):
     """
     hobby = []
 
-    file = open(filename)
-    for line in file:
-        hobby1 = line.split("|")
-        hobby.append([hobby1[0], hobby1[3]])
+    fitness = []
+    nature = []
+    education = []
+    music = []
+    fashion = []
+    play = []
 
-    return hobby
+    file = open(filename)
+
+    for line in file:
+        name = line.split("|")[0]
+        hobby = line.split("|")[3]
+
+        if hobby == "Fitness":
+            fitness.append(name)
+        elif hobby == "Nature":
+            nature.append(name)
+        elif hobby == "Education":
+            education.append(name)
+        elif hobby == "Music":
+            music.append(name)
+        elif hobby == "Fashion":
+            fashion.append(name)
+        elif hobby == "Play":
+            play.append(name)
+
+    return [
+        sorted(fitness),
+        sorted(nature),
+        sorted(education),
+        sorted(music),
+        sorted(fashion),
+        sorted(play),
+    ]
 
 
 print(all_names_by_hobby(filename))
@@ -95,7 +123,7 @@ def all_data(filename):
     file = open(filename)
     for line in file:
         all_data1 = line.split("|")
-        all_data.append([tuple(all_data1)])
+        all_data.append(tuple(all_data1))
 
     return all_data
 
@@ -147,6 +175,7 @@ def find_likeminded_villagers(filename, villager_name):
         {'Bella', ..., 'Carmen'}
     """
     likeminded_villagers = set()
+    likeminded_personality = None
 
     file = open(filename)
     for line in file:
@@ -154,10 +183,21 @@ def find_likeminded_villagers(filename, villager_name):
         name = like_minds[0]
         personality = like_minds[2]
 
-        if personality == villager_name:
-            likeminded_villagers.add(name)
+        if villager_name == name:
+            likeminded_personality = personality
+            break
+
+    if likeminded_personality:
+        file = open(filename)
+        for line in file:
+            like_minds = line.split("|")
+            name = like_minds[0]
+            personality = like_minds[2]
+
+            if personality == likeminded_personality:
+                likeminded_villagers.add(name)
 
     return likeminded_villagers
 
 
-print(find_likeminded_villagers(filename, "Cranky"))
+print(find_likeminded_villagers(filename, "Audie"))
